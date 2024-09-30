@@ -174,8 +174,10 @@ class Spell:
         return {
             "nid": name + type,
             "poses": [
-                "Attack",
-                commands
+                [
+                    "Attack",
+                    commands
+                ]
             ],
             "frames": Spell.convertImagesToFrames(images, width, height),
             "palettes": [
