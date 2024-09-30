@@ -6,7 +6,7 @@ import os
 import json
 
 spellName = input("spell name: ")
-animationPath = imput("animation path: ")
+animationPath = input("animation path: ")
 outputPath = input("output folder (will be created if it doesn't exist): ")
 
 def dumpJSON(name, data):
