@@ -15,6 +15,7 @@ class Parser:
     backgroundImages = {}
 
     currentBrightness = 1
+    currentBrightnessChange = None
 
     currentForeground = None
     currentBackground = None
@@ -157,13 +158,15 @@ class Parser:
                                 opacity = 1.0 - (arg2 / 0x10 / 2)
 
                                 # assume if brightness changes, we are changing fully
-                                if brightness < self.currentBrightness:
-                                    self.currentBrightness = 0
+                                if brightness < self.currentBrightness and self.currentBrightnessChange != -1:
+                                    self.currentBrightnessChange = -1
                                     self.addGlobalCommand("darken")
 
-                                elif brightness > self.currentBrightness:
-                                    self.currentBrightness = 1
+                                elif brightness > self.currentBrightness and self.currentBrightnessChange != 1:
+                                    self.currentBrightnessChange = 1
                                     self.addGlobalCommand("lighten")
+
+                                self.currentBrightness = brightness
 
                             # Sets whether maps 2 and 3 of the GBA screen should be visible.
                             case 0x2A:

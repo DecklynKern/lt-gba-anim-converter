@@ -151,6 +151,8 @@ class Spell:
                 [
                     "Attack",
                     commandsOnHit,
+                ],
+                [
                     "Miss",
                     commandsOnMiss
                 ]
