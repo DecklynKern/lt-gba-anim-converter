@@ -155,7 +155,7 @@ class Spell:
             for (n, frameName) in enumerate(images.values())
         ]
     
-    def generateImageUpdateJSON(self, name, type, updates, images, width, height):
+    def generateImageUpdateJSON(self, name, updates, images, width, height):
 
         commands = [
             [
@@ -172,7 +172,7 @@ class Spell:
         commands.append(wait(1))
 
         return {
-            "nid": name + type,
+            "nid": name,
             "poses": [
                 [
                     "Attack",
@@ -190,8 +190,7 @@ class Spell:
     
     def generateForegroundOnHitJSON(self):
         return self.generateImageUpdateJSON(
-            self.name + "FG",
-            "Hit",
+            self.name + "FGHit",
             self.foregroundUpdates + self.foregroundUpdatesAfterHit,
             self.foregroundImages,
             FOREGROUND_WIDTH,
@@ -200,8 +199,7 @@ class Spell:
     
     def generateForegroundOnMissJSON(self):
         return self.generateImageUpdateJSON(
-            self.name + "FG",
-            "Miss",
+            self.name + "FGMiss",
             self.foregroundUpdates,
             self.foregroundImages,
             FOREGROUND_WIDTH,
@@ -210,8 +208,7 @@ class Spell:
     
     def generateBackgroundOnHitJSON(self):
         return self.generateImageUpdateJSON(
-            self.name + "BG",
-            "Hit",
+            self.name + "BGHit",
             self.backgroundUpdates + self.backgroundUpdatesAfterHit,
             self.backgroundImages,
             BACKGROUND_WIDTH,
@@ -220,23 +217,34 @@ class Spell:
     
     def generateBackgroundOnMissJSON(self):
         return self.generateImageUpdateJSON(
-            self.name + "BG",
-            "Miss",
+            self.name + "BGMiss",
             self.backgroundUpdates,
             self.backgroundImages,
             BACKGROUND_WIDTH,
             self.backgroundImageHeight
         )
     
-    def generateForegroundPaletteJSON(self):
+    def generateForegroundOnHitPaletteJSON(self):
         return [
-            "%sFG_Image" % self.name,
+            "%sFGHit_Image" % self.name,
             [[self.foregroundPaletteData[colour], list(colour)] for colour in self.foregroundPaletteData]
         ]
     
-    def generateBackgroundPaletteJSON(self):
+    def generateForegroundOnMissPaletteJSON(self):
         return [
-            "%sBG_Image" % self.name,
+            "%sFGMiss_Image" % self.name,
+            [[self.foregroundPaletteData[colour], list(colour)] for colour in self.foregroundPaletteData]
+        ]
+    
+    def generateBackgroundOnHitPaletteJSON(self):
+        return [
+            "%sBGHit_Image" % self.name,
+            [[self.backgroundPaletteData[colour], list(colour)] for colour in self.backgroundPaletteData]
+        ]
+    
+    def generateBackgroundOnMissPaletteJSON(self):
+        return [
+            "%sBGMiss_Image" % self.name,
             [[self.backgroundPaletteData[colour], list(colour)] for colour in self.backgroundPaletteData]
         ]
     

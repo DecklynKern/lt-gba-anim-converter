@@ -33,18 +33,18 @@ def main():
     dumpJSON(spell.name + "BGHit_effect", spell.generateBackgroundOnHitJSON())
     dumpJSON(spell.name + "BGMiss_effect", spell.generateBackgroundOnMissJSON())
 
-    dumpJSON(spell.name + "FG_Image_palette", spell.generateForegroundPaletteJSON())
-    dumpJSON(spell.name + "BG_Image_palette", spell.generateBackgroundPaletteJSON())
+    dumpJSON(spell.name + "FGHit_Image_palette", spell.generateForegroundOnHitPaletteJSON())
+    dumpJSON(spell.name + "FGMiss_Image_palette", spell.generateForegroundOnMissPaletteJSON())
+    dumpJSON(spell.name + "BGHit_Image_palette", spell.generateBackgroundOnHitPaletteJSON())
+    dumpJSON(spell.name + "BGMiss_Image_palette", spell.generateBackgroundOnMissPaletteJSON())
 
     fgHitPath = os.path.join(outputPath, spell.name + "FGHit.png")
     bgHitPath = os.path.join(outputPath, spell.name + "BGHit.png")
-
     fgMissPath = os.path.join(outputPath, spellName + "FGMiss.png")
     bgMissPath = os.path.join(outputPath, spellName + "BGMiss.png")
 
     spell.getForegroundSheet(animationPath).save(fgHitPath)
     spell.getBackgroundSheet(animationPath).save(bgHitPath)
-
     shutil.copyfile(fgHitPath, fgMissPath)
     shutil.copyfile(bgHitPath, bgMissPath)
 
