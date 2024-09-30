@@ -5,9 +5,9 @@ from PyQt5 import QtGui
 import os
 import json
 
-spellName = "Spell"
-animationPath = r"animations\light"
-outputPath = r"output"
+spellName = input("spell name: ")
+animationPath = imput("animation path: ")
+outputPath = input("output folder (will be created if it doesn't exist): ")
 
 def dumpJSON(name, data):
     with open(os.path.join(outputPath, name + ".json"), "w") as outputFile:
@@ -21,6 +21,9 @@ def main():
     spell = parser.parse(os.path.join(animationPath, "Spell.txt"))
 
     spell.calculatePalettes(animationPath)
+
+    if not os.path.exists(outputPath):
+        os.mkdir(outputPath)
 
     dumpJSON(spell.name + "_effect", spell.generateParentEffectJSON())
 
