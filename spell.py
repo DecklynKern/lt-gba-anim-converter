@@ -203,10 +203,20 @@ class Spell:
             ]
         }
     
+    def combineUpdates(updates1, updates2):
+
+        combinedUpdates = updates1 + updates2
+
+        if updates1[-1][0] == updates2[0][0]:
+            combinedUpdates[len(updates1) - 1] = (updates2[0][0], updates1[-1][1] + updates2[0][1])
+            combinedUpdates.pop(len(updates1))
+    
+        return combinedUpdates
+
     def generateForegroundOnHitJSON(self):
         return self.generateImageUpdateJSON(
             self.name + "FGHit",
-            self.foregroundUpdates + self.foregroundUpdatesAfterHit,
+            Spell.combineUpdates(self.foregroundUpdates, self.foregroundUpdatesAfterHit),
             self.foregroundImages,
             self.foregroundImageHeight
         )
@@ -222,7 +232,7 @@ class Spell:
     def generateBackgroundOnHitJSON(self):
         return self.generateImageUpdateJSON(
             self.name + "BGHit",
-            self.backgroundUpdates + self.backgroundUpdatesAfterHit,
+            Spell.combineUpdates(self.backgroundUpdates, self.backgroundUpdatesAfterHit),
             self.backgroundImages,
             BACKGROUND_HEIGHT
         )
