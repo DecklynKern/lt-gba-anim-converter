@@ -15,8 +15,12 @@ class Parser:
     backgroundImages = {}
 
     currentBrightness = 1
+
     currentForeground = None
     currentBackground = None
+
+    lastForegroundChange = 0
+    lastBackgroundChange = 0
 
     stretchForeground = False
 
@@ -40,39 +44,65 @@ class Parser:
         if not self.foundMissTerminator:
             self.addGlobalCommandOnMiss(name, parameters)
 
-    def updateForeground(self, newForeground, waitFrames):
+    def endLastForegroundUpdate(self):
+
+        if not self.foundMissTerminator:            
+            if len(self.foregroundUpdates) != 0:
+                self.foregroundUpdates[-1] = (self.foregroundUpdates[-1], self.currentFrame - self.lastForegroundChange)
+
+        else:
+            if len(self.foregroundUpdatesAfterHit) != 0:
+                self.foregroundUpdatesAfterHit[-1] = (self.foregroundUpdatesAfterHit[-1], self.currentFrame - self.lastForegroundChange)
+
+        self.lastForegroundChange = self.currentFrame
+
+    def endLastBackgroundUpdate(self):
+
+        if not self.foundMissTerminator:            
+            if len(self.backgroundUpdates) != 0:
+                self.backgroundUpdates[-1] = (self.backgroundUpdates[-1], self.currentFrame - self.lastBackgroundChange)
+
+        else:
+            if len(self.backgroundUpdatesAfterHit) != 0:
+                self.backgroundUpdatesAfterHit[-1] = (self.backgroundUpdatesAfterHit[-1], self.currentFrame - self.lastBackgroundChange)
+
+        self.lastBackgroundChange = self.currentFrame
+
+    def updateForeground(self, newForeground):
 
         self.currentForeground = newForeground
+        self.endLastForegroundUpdate()
 
         if newForeground not in self.foregroundImages:
             self.foregroundImages[newForeground] = "%sFG%d" % (self.spellName, len(self.foregroundImages))
 
         if self.foundMissTerminator:
-            self.foregroundUpdatesAfterHit.append((newForeground, waitFrames))
+            self.foregroundUpdatesAfterHit.append(newForeground)
 
         else:
-            self.foregroundUpdates.append((newForeground, waitFrames))
+            self.foregroundUpdates.append(newForeground)
 
-    def updateBackground(self, newBackground, waitFrames):
+    def updateBackground(self, newBackground):
 
         self.currentBackground = newBackground
+        self.endLastBackgroundUpdate()
 
         if newBackground not in self.backgroundImages:
             self.backgroundImages[newBackground] = "%sBG%d" % (self.spellName, len(self.backgroundImages))
 
         if self.foundMissTerminator:
-            self.backgroundUpdatesAfterHit.append((newBackground, waitFrames))
+            self.backgroundUpdatesAfterHit.append(newBackground)
 
         else:
-            self.backgroundUpdates.append((newBackground, waitFrames))
+            self.backgroundUpdates.append(newBackground)
 
-    def tryUpdateDisplay(self, newForeground, newBackground, waitFrames):
+    def tryUpdateDisplay(self, newForeground, newBackground):
         
-        if newForeground != self.currentBackground:
-            self.updateForeground(newForeground, waitFrames)
+        if newForeground != self.currentForeground:
+            self.updateForeground(newForeground)
 
         if newBackground != self.currentBackground:
-            self.updateBackground(newBackground, waitFrames)
+            self.updateBackground(newBackground)
 
     def parse(self, spellFilePath):
 
@@ -152,7 +182,7 @@ class Parser:
                             # Plays sound or music whose ID corresponds to those documented in Music List.txt of the Nightmare module packages.
                             case 0x48:
                                 soundID = arg1 * 256 + arg2
-                                self.addGlobalCommand("sound", SOUND_TABLE[soundID])
+                                self.addGlobalCommand("sound", [SOUND_TABLE[soundID]])
 
                             # 0x49 through 0x52 - passed to attacker's animation
 
@@ -172,7 +202,7 @@ class Parser:
                         foregroundImage = lines.pop().split(" ")[-1]
                         duration = int(lines.pop())
 
-                        self.tryUpdateDisplay(foregroundImage, backgroundImage, duration)
+                        self.tryUpdateDisplay(foregroundImage, backgroundImage)
                         self.currentFrame += duration
 
                     # miss terminator        
@@ -181,13 +211,28 @@ class Parser:
                         if self.hasPanned:
                             self.addGlobalCommandOnMiss("pan")
 
+                        self.foregroundUpdatesAfterHit.append(self.foregroundUpdates[-1])
+                        self.backgroundUpdatesAfterHit.append(self.backgroundUpdates[-1])
+
+                        self.endLastForegroundUpdate()
+                        self.endLastBackgroundUpdate()
+
                         self.foundMissTerminator = True
 
                     # ???
                     case _:
                         pass
 
+        self.endLastForegroundUpdate()
+        self.endLastBackgroundUpdate()
+
         if self.hasPanned:
             self.addGlobalCommandOnHit("pan")
+
+        if self.foregroundUpdatesAfterHit[0][1] == 0:
+            self.foregroundUpdatesAfterHit = self.foregroundUpdatesAfterHit[1:]
+
+        if self.backgroundUpdatesAfterHit[0][1] == 0:
+            self.backgroundUpdatesAfterHit = self.backgroundUpdatesAfterHit[1:]
 
         return Spell(self.spellName, self.globalCommandsOnHit, self.globalCommandsOnMiss, self.foregroundUpdates, self.foregroundUpdatesAfterHit, self.backgroundUpdates, self.backgroundUpdatesAfterHit, self.foregroundImages, self.backgroundImages, self.stretchForeground)
