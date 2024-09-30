@@ -161,6 +161,7 @@ class Spell:
             for (newImage, waitFrames) in updates
         ]
 
+        commands.insert(0, ["blend", [True]])
         commands.append(wait(1))
 
         return {
