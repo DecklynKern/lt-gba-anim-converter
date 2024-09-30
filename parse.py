@@ -2,8 +2,8 @@ from spell import *
 
 class Parser:
 
-    globalCommands = []
-    globalCommandsAfterHit = []
+    globalCommandsOnHit = []
+    globalCommandsOnMiss = []
     
     foregroundUpdates = []
     foregroundUpdatesAfterHit = []
@@ -23,13 +23,18 @@ class Parser:
     def __init__(self, spellName):
         self.spellName = spellName
 
+    def addGlobalCommandOnHit(self, name, parameters=None):
+        self.globalCommandsOnHit.append([self.currentFrame, name, parameters])
+
+    def addGlobalCommandOnMiss(self, name, parameters=None):
+        self.globalCommandsOnMiss.append([self.currentFrame, name, parameters])
+
     def addGlobalCommand(self, name, parameters=None):
         
-        if self.foundMissTerminator:
-            self.globalCommandsAfterHit.append((self.currentFrame, name, parameters))
+        self.addGlobalCommandOnHit(name, parameters)
 
-        else:
-            self.globalCommands.append([self.currentFrame, name, parameters])
+        if not self.foundMissTerminator:
+            self.addGlobalCommandOnMiss(name, parameters)
 
     def updateForeground(self, newForeground, waitFrames):
 
@@ -107,6 +112,10 @@ class Parser:
                             
                             # 0x14 through 0x28 - passed to attacker's animation;
 
+                            case 0x1F:
+                                self.addGlobalCommandOnHit("spell_hit")
+                                self.addGlobalCommandOnMiss("miss")
+
                             # set brightness and opacity levels
                             case 0x29:
                                 
@@ -130,7 +139,7 @@ class Parser:
 
                             # Plays sound or music whose ID corresponds to those documented in Music List.txt of the Nightmare module packages.
                             case 0x48:
-                                pass
+                                self.addGlobalCommand("sound", [str(arg1 * 256 + arg2)])
 
                             # 0x49 through 0x52 - passed to attacker's animation
 
@@ -157,7 +166,7 @@ class Parser:
                     case "~":
 
                         if self.hasPanned:
-                            self.addGlobalCommand("miss_pan")
+                            self.addGlobalCommandOnMiss("pan")
 
                         self.foundMissTerminator = True
 
@@ -166,6 +175,6 @@ class Parser:
                         pass
 
         if self.hasPanned:
-            self.addGlobalCommand("pan")
+            self.addGlobalCommandOnHit("pan")
 
-        return Spell(self.spellName, self.globalCommands, self.globalCommandsAfterHit, self.foregroundUpdates, self.foregroundUpdatesAfterHit, self.backgroundUpdates, self.backgroundUpdatesAfterHit, self.foregroundImages, self.backgroundImages)
+        return Spell(self.spellName, self.globalCommandsOnHit, self.globalCommandsOnMiss, self.foregroundUpdates, self.foregroundUpdatesAfterHit, self.backgroundUpdates, self.backgroundUpdatesAfterHit, self.foregroundImages, self.backgroundImages)
