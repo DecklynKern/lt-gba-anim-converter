@@ -1,4 +1,5 @@
 from spell import *
+from sound import *
 
 class Parser:
 
@@ -150,7 +151,8 @@ class Parser:
 
                             # Plays sound or music whose ID corresponds to those documented in Music List.txt of the Nightmare module packages.
                             case 0x48:
-                                self.addGlobalCommand("sound", [str(arg1 * 256 + arg2)])
+                                soundID = arg1 * 256 + arg2
+                                self.addGlobalCommand("sound", SOUND_TABLE[soundID])
 
                             # 0x49 through 0x52 - passed to attacker's animation
 

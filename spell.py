@@ -83,7 +83,7 @@ class Spell:
 
         commandsOnHit = [
             [
-                "enemy_effect",
+                "effect",
                 [
                     "%sFGHit" % self.name
                 ]
@@ -92,7 +92,7 @@ class Spell:
 
         commandsOnMiss = [
             [
-                "enemy_effect",
+                "effect",
                 [
                     "%sFGMiss" % self.name
                 ]
@@ -102,14 +102,14 @@ class Spell:
         if not self.skipBackground:
 
             commandsOnHit.append([
-                "enemy_under_effect",
+                "under_effect",
                 [
                     "%sBGHit" % self.name
                 ]
             ])
             
             commandsOnMiss.append([
-                "enemy_under_effect",
+                "under_effect",
                 [
                     "%sBGMiss" % self.name
                 ]
@@ -277,7 +277,7 @@ class Spell:
                     colour = image.pixelColor(x + offsetX, y).getRgb()[:-1]
                     [g, b] = paletteData[colour]
 
-                    outputX = SCREEN_WIDTH * idx + (SCREEN_WIDTH - x - 1)
+                    outputX = SCREEN_WIDTH * idx + x
                     outputColour = QColor(0, g, b)
 
                     if stretch:
