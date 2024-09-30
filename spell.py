@@ -134,10 +134,12 @@ class Spell:
         return {
             "nid": self.name,
             "poses": [
-                "Attack",
-                commandsOnHit,
-                "Miss",
-                commandsOnMiss
+                [
+                    "Attack",
+                    commandsOnHit,
+                    "Miss",
+                    commandsOnMiss
+                ]
             ],
             "frames": [],
             "palettes": []
