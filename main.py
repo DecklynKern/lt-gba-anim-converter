@@ -4,6 +4,7 @@ from spell import *
 from PyQt5 import QtGui
 import os
 import json
+import shutil
 
 spellName = input("spell name: ")
 animationPath = input("animation path: ")
@@ -35,8 +36,17 @@ def main():
     dumpJSON(spell.name + "FG_Image_palette", spell.generateForegroundPaletteJSON())
     dumpJSON(spell.name + "BG_Image_palette", spell.generateBackgroundPaletteJSON())
 
-    spell.getForegroundSheet(animationPath).save(os.path.join(outputPath, spell.name + "FG.png"))
-    spell.getBackgroundSheet(animationPath).save(os.path.join(outputPath, spell.name + "BG.png"))
+    fgHitPath = os.path.join(outputPath, spell.name + "FGHit.png")
+    bgHitPath = os.path.join(outputPath, spell.name + "BGHit.png")
+
+    fgMissPath = os.path.join(outputPath, spellName + "FGMiss.png")
+    bgMissPath = os.path.join(outputPath, spellName + "BGMiss.png")
+
+    spell.getForegroundSheet(animationPath).save(fgHitPath)
+    spell.getBackgroundSheet(animationPath).save(bgHitPath)
+
+    shutil.copyfile(fgHitPath, fgMissPath)
+    shutil.copyfile(bgHitPath, bgMissPath)
 
 if __name__ == "__main__":
     main()
