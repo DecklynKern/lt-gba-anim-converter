@@ -16,7 +16,7 @@ class Parser:
     currentForeground = None
     currentBackground = None
 
-    stretch = False
+    stretchForeground = False
 
     currentFrame = 0
     foundMissTerminator = False
@@ -147,7 +147,7 @@ class Parser:
 
                             # enable screen stretch - assume used for entire animation
                             case 0x53:
-                                self.stretch = True
+                                self.stretchForeground = True
 
                             # unused
                             case _:
@@ -157,8 +157,8 @@ class Parser:
                     # update images
                     case "O":
                         
-                        foregroundImage = line.split(" ")[-1]
-                        backgroundImage = lines.pop().split(" ")[-1]
+                        backgroundImage = line.split(" ")[-1]
+                        foregroundImage = lines.pop().split(" ")[-1]
                         duration = int(lines.pop())
 
                         self.tryUpdateDisplay(foregroundImage, backgroundImage, duration)
@@ -179,4 +179,4 @@ class Parser:
         if self.hasPanned:
             self.addGlobalCommandOnHit("pan")
 
-        return Spell(self.spellName, self.globalCommandsOnHit, self.globalCommandsOnMiss, self.foregroundUpdates, self.foregroundUpdatesAfterHit, self.backgroundUpdates, self.backgroundUpdatesAfterHit, self.foregroundImages, self.backgroundImages, self.stretch)
+        return Spell(self.spellName, self.globalCommandsOnHit, self.globalCommandsOnMiss, self.foregroundUpdates, self.foregroundUpdatesAfterHit, self.backgroundUpdates, self.backgroundUpdatesAfterHit, self.foregroundImages, self.backgroundImages, self.stretchForeground)

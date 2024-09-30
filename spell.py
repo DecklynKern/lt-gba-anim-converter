@@ -3,15 +3,15 @@ import os
 
 SCREEN_WIDTH = 240
 
-FOREGROUND_WIDTH = 480
-FOREGROUND_HEIGHT = 160
+BACKGROUND_WIDTH = 480
+BACKGROUND_HEIGHT = 160
 
 def wait(n):
     return ["wait", [n]]
 
 class Spell:
 
-    def __init__(self, name, globalCommandsOnHit, globalCommandsOnMiss, foregroundUpdates, foregroundUpdatesAfterHit, backgroundUpdates, backgroundUpdatesAfterHit, foregroundImages, backgroundImages, stretchBackground):
+    def __init__(self, name, globalCommandsOnHit, globalCommandsOnMiss, foregroundUpdates, foregroundUpdatesAfterHit, backgroundUpdates, backgroundUpdatesAfterHit, foregroundImages, backgroundImages, stretchForeground):
 
         self.name = name
 
@@ -26,43 +26,44 @@ class Spell:
         self.foregroundImages = foregroundImages
         self.backgroundImages = backgroundImages
 
-        self.stretchBackground = stretchBackground
+        self.stretchForeground = stretchForeground
 
-        self.foregroundPaletteData = {}
         self.backgroundPaletteData = {}
+        self.foregroundPaletteData = {}
 
-        self.backgroundImageHeight = None
+        self.foregroundImageHeight = None
+        self.skipBackground = len(self.backgroundImages) == 1
 
+    # not all images have palette in top-right, need to iterate every pixel
     def addForegroundPaletteColours(self, imagePath):
-        
+
         image = QImage(imagePath)
 
-        for y in range(0, 2):
-            for x in range(FOREGROUND_WIDTH - 1, FOREGROUND_WIDTH - 9, -1):
+        if self.foregroundImageHeight is None:
+
+            self.foregroundImageHeight = image.height()
+
+            if self.foregroundImageHeight < 80:
+                self.stretchForeground = True
+        
+        for x in range(SCREEN_WIDTH):
+            for y in range(self.foregroundImageHeight):
 
                 colour = image.pixelColor(x, y).getRgb()[:3]
-                
+
                 if colour not in self.foregroundPaletteData:
                     idx = len(self.foregroundPaletteData)
                     self.foregroundPaletteData[colour] = [idx % 8, int(idx / 8)]
 
-    # not all images have palette in top-right, need to iterate every pixel
     def addBackgroundPaletteColours(self, imagePath):
-
+        
         image = QImage(imagePath)
 
-        if self.backgroundImageHeight is None:
-
-            self.backgroundImageHeight = image.height()
-
-            if self.backgroundImageHeight < 80:
-                self.stretchBackground = True
-        
-        for x in range(SCREEN_WIDTH):
-            for y in range(self.backgroundImageHeight):
+        for y in range(0, 2):
+            for x in range(BACKGROUND_WIDTH - 1, BACKGROUND_WIDTH - 9, -1):
 
                 colour = image.pixelColor(x, y).getRgb()[:3]
-
+                
                 if colour not in self.backgroundPaletteData:
                     idx = len(self.backgroundPaletteData)
                     self.backgroundPaletteData[colour] = [idx % 8, int(idx / 8)]
@@ -199,7 +200,7 @@ class Spell:
             self.name + "FGHit",
             self.foregroundUpdates + self.foregroundUpdatesAfterHit,
             self.foregroundImages,
-            FOREGROUND_HEIGHT
+            self.foregroundImageHeight
         )
     
     def generateForegroundOnMissJSON(self):
@@ -207,7 +208,7 @@ class Spell:
             self.name + "FGMiss",
             self.foregroundUpdates,
             self.foregroundImages,
-            FOREGROUND_HEIGHT
+            self.foregroundImageHeight
         )
     
     def generateBackgroundOnHitJSON(self):
@@ -215,7 +216,7 @@ class Spell:
             self.name + "BGHit",
             self.backgroundUpdates + self.backgroundUpdatesAfterHit,
             self.backgroundImages,
-            self.backgroundImageHeight
+            BACKGROUND_HEIGHT
         )
     
     def generateBackgroundOnMissJSON(self):
@@ -223,7 +224,7 @@ class Spell:
             self.name + "BGMiss",
             self.backgroundUpdates,
             self.backgroundImages,
-            self.backgroundImageHeight
+            self.foregroundImageHeight
         )
     
     def generateForegroundOnHitPaletteJSON(self):
@@ -281,7 +282,7 @@ class Spell:
         return palettizedSheet
     
     def getForegroundSheet(self, animationPath):
-        return Spell.getPalettizedSheet(animationPath, self.foregroundImages, self.foregroundPaletteData, FOREGROUND_HEIGHT, 240, True, False)
+        return Spell.getPalettizedSheet(animationPath, self.foregroundImages, self.foregroundPaletteData, self.foregroundImageHeight, 0, False, self.stretchForeground)
 
     def getBackgroundSheet(self, animationPath):
-        return Spell.getPalettizedSheet(animationPath, self.backgroundImages, self.backgroundPaletteData, self.backgroundImageHeight, 0, False, self.stretchBackground)
+        return Spell.getPalettizedSheet(animationPath, self.backgroundImages, self.backgroundPaletteData, BACKGROUND_HEIGHT, 232, True, False)
