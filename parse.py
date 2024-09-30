@@ -16,6 +16,8 @@ class Parser:
     currentForeground = None
     currentBackground = None
 
+    stretch = False
+
     currentFrame = 0
     foundMissTerminator = False
     hasPanned = True
@@ -143,9 +145,9 @@ class Parser:
 
                             # 0x49 through 0x52 - passed to attacker's animation
 
-                            # lex talionis does not support screen stretch
+                            # enable screen stretch - assume used for entire animation
                             case 0x53:
-                                pass
+                                self.stretch = True
 
                             # unused
                             case _:
@@ -177,4 +179,4 @@ class Parser:
         if self.hasPanned:
             self.addGlobalCommandOnHit("pan")
 
-        return Spell(self.spellName, self.globalCommandsOnHit, self.globalCommandsOnMiss, self.foregroundUpdates, self.foregroundUpdatesAfterHit, self.backgroundUpdates, self.backgroundUpdatesAfterHit, self.foregroundImages, self.backgroundImages)
+        return Spell(self.spellName, self.globalCommandsOnHit, self.globalCommandsOnMiss, self.foregroundUpdates, self.foregroundUpdatesAfterHit, self.backgroundUpdates, self.backgroundUpdatesAfterHit, self.foregroundImages, self.backgroundImages, self.stretch)

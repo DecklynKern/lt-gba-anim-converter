@@ -1,17 +1,17 @@
 from PyQt5.QtGui import QPixmap, QImage, QColor
 import os
 
+SCREEN_WIDTH = 240
+
 FOREGROUND_WIDTH = 480
 FOREGROUND_HEIGHT = 160
-
-BACKGROUND_WIDTH = 240
 
 def wait(n):
     return ["wait", [n]]
 
 class Spell:
 
-    def __init__(self, name, globalCommandsOnHit, globalCommandsOnMiss, foregroundUpdates, foregroundUpdatesAfterHit, backgroundUpdates, backgroundUpdatesAfterHit, foregroundImages, backgroundImages):
+    def __init__(self, name, globalCommandsOnHit, globalCommandsOnMiss, foregroundUpdates, foregroundUpdatesAfterHit, backgroundUpdates, backgroundUpdatesAfterHit, foregroundImages, backgroundImages, stretchBackground):
 
         self.name = name
 
@@ -25,6 +25,8 @@ class Spell:
 
         self.foregroundImages = foregroundImages
         self.backgroundImages = backgroundImages
+
+        self.stretchBackground = stretchBackground
 
         self.foregroundPaletteData = {}
         self.backgroundPaletteData = {}
@@ -50,9 +52,13 @@ class Spell:
         image = QImage(imagePath)
 
         if self.backgroundImageHeight is None:
+
             self.backgroundImageHeight = image.height()
+
+            if self.backgroundImageHeight < 80:
+                self.stretchBackground = True
         
-        for x in range(BACKGROUND_WIDTH):
+        for x in range(SCREEN_WIDTH):
             for y in range(self.backgroundImageHeight):
 
                 colour = image.pixelColor(x, y).getRgb()[:3]
@@ -145,17 +151,17 @@ class Spell:
             "palettes": []
         }
     
-    def convertImagesToFrames(images, width, height):
+    def convertImagesToFrames(images, height):
         return [
             [
                 frameName,
-                [n * width, 0, width, height],
+                [n * SCREEN_WIDTH, 0, SCREEN_WIDTH, height],
                 [0, 0]
             ]
             for (n, frameName) in enumerate(images.values())
         ]
     
-    def generateImageUpdateJSON(self, name, updates, images, width, height):
+    def generateImageUpdateJSON(self, name, updates, images, height):
 
         commands = [
             [
@@ -164,7 +170,7 @@ class Spell:
                     waitFrames,
                     images[newImage]
                 ]
-            ]
+            ]   
             for (newImage, waitFrames) in updates
         ]
 
@@ -179,7 +185,7 @@ class Spell:
                     commands
                 ]
             ],
-            "frames": Spell.convertImagesToFrames(images, width, height),
+            "frames": Spell.convertImagesToFrames(images, height),
             "palettes": [
                 [
                     "Image",
@@ -193,7 +199,6 @@ class Spell:
             self.name + "FGHit",
             self.foregroundUpdates + self.foregroundUpdatesAfterHit,
             self.foregroundImages,
-            FOREGROUND_WIDTH,
             FOREGROUND_HEIGHT
         )
     
@@ -202,7 +207,6 @@ class Spell:
             self.name + "FGMiss",
             self.foregroundUpdates,
             self.foregroundImages,
-            FOREGROUND_WIDTH,
             FOREGROUND_HEIGHT
         )
     
@@ -211,7 +215,6 @@ class Spell:
             self.name + "BGHit",
             self.backgroundUpdates + self.backgroundUpdatesAfterHit,
             self.backgroundImages,
-            BACKGROUND_WIDTH,
             self.backgroundImageHeight
         )
     
@@ -220,7 +223,6 @@ class Spell:
             self.name + "BGMiss",
             self.backgroundUpdates,
             self.backgroundImages,
-            BACKGROUND_WIDTH,
             self.backgroundImageHeight
         )
     
@@ -248,9 +250,10 @@ class Spell:
             [[self.backgroundPaletteData[colour], list(colour)] for colour in self.backgroundPaletteData]
         ]
     
-    def getPalettizedSheet(animationPath, images, paletteData, width, height, hasPalette):
+    def getPalettizedSheet(animationPath, images, paletteData, height, offsetX, hasPalette, stretch):
 
-        palettizedSheet = QImage(width * len(images), height, QImage.Format.Format_RGB32)
+        palettizedHeight = 2 * height if stretch else height
+        palettizedSheet = QImage(SCREEN_WIDTH * len(images), palettizedHeight, QImage.Format.Format_RGB32)
         
         for (idx, img) in enumerate(images):
             
@@ -258,17 +261,27 @@ class Spell:
 
             for y in range(height):
 
-                xrange = range(width) if (not hasPalette or y > 1) else range(width - 8)
+                xrange = range(SCREEN_WIDTH) if (not hasPalette or y > 1) else range(SCREEN_WIDTH - 8)
 
                 for x in xrange:
-                    colour = image.pixelColor(x, y).getRgb()[:-1]
+                    
+                    colour = image.pixelColor(x + offsetX, y).getRgb()[:-1]
                     [g, b] = paletteData[colour]
-                    palettizedSheet.setPixelColor(width * idx + x, y, QColor(0, g, b))
+
+                    outputX = SCREEN_WIDTH * idx + (SCREEN_WIDTH - x - 1)
+                    outputColour = QColor(0, g, b)
+
+                    if stretch:
+                        palettizedSheet.setPixelColor(outputX, 2 * y, outputColour)
+                        palettizedSheet.setPixelColor(outputX, 2 * y + 1, outputColour)
+    
+                    else:
+                        palettizedSheet.setPixelColor(outputX, y, outputColour)
         
         return palettizedSheet
     
     def getForegroundSheet(self, animationPath):
-        return Spell.getPalettizedSheet(animationPath, self.foregroundImages, self.foregroundPaletteData, FOREGROUND_WIDTH, FOREGROUND_HEIGHT, True)
+        return Spell.getPalettizedSheet(animationPath, self.foregroundImages, self.foregroundPaletteData, FOREGROUND_HEIGHT, 240, True, False)
 
     def getBackgroundSheet(self, animationPath):
-        return Spell.getPalettizedSheet(animationPath, self.backgroundImages, self.backgroundPaletteData, BACKGROUND_WIDTH, self.backgroundImageHeight, False)
+        return Spell.getPalettizedSheet(animationPath, self.backgroundImages, self.backgroundPaletteData, self.backgroundImageHeight, 0, False, self.stretchBackground)
