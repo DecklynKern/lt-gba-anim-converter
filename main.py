@@ -30,23 +30,29 @@ def main():
 
     dumpJSON(spell.name + "FGHit_effect", spell.generateForegroundOnHitJSON())
     dumpJSON(spell.name + "FGMiss_effect", spell.generateForegroundOnMissJSON())
-    dumpJSON(spell.name + "BGHit_effect", spell.generateBackgroundOnHitJSON())
-    dumpJSON(spell.name + "BGMiss_effect", spell.generateBackgroundOnMissJSON())
 
     dumpJSON(spell.name + "FGHit_Image_palette", spell.generateForegroundOnHitPaletteJSON())
     dumpJSON(spell.name + "FGMiss_Image_palette", spell.generateForegroundOnMissPaletteJSON())
-    dumpJSON(spell.name + "BGHit_Image_palette", spell.generateBackgroundOnHitPaletteJSON())
-    dumpJSON(spell.name + "BGMiss_Image_palette", spell.generateBackgroundOnMissPaletteJSON())
 
     fgHitPath = os.path.join(outputPath, spell.name + "FGHit.png")
-    bgHitPath = os.path.join(outputPath, spell.name + "BGHit.png")
     fgMissPath = os.path.join(outputPath, spellName + "FGMiss.png")
-    bgMissPath = os.path.join(outputPath, spellName + "BGMiss.png")
 
     spell.getForegroundSheet(animationPath).save(fgHitPath)
-    spell.getBackgroundSheet(animationPath).save(bgHitPath)
     shutil.copyfile(fgHitPath, fgMissPath)
-    shutil.copyfile(bgHitPath, bgMissPath)
+
+    if not spell.skipBackground:
+
+        dumpJSON(spell.name + "BGHit_effect", spell.generateBackgroundOnHitJSON())
+        dumpJSON(spell.name + "BGMiss_effect", spell.generateBackgroundOnMissJSON())
+
+        dumpJSON(spell.name + "BGHit_Image_palette", spell.generateBackgroundOnHitPaletteJSON())
+        dumpJSON(spell.name + "BGMiss_Image_palette", spell.generateBackgroundOnMissPaletteJSON())
+
+        bgHitPath = os.path.join(outputPath, spell.name + "BGHit.png")
+        bgMissPath = os.path.join(outputPath, spellName + "BGMiss.png")
+
+        spell.getBackgroundSheet(animationPath).save(bgHitPath)
+        shutil.copyfile(bgHitPath, bgMissPath)
 
 if __name__ == "__main__":
     main()

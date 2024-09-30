@@ -73,6 +73,9 @@ class Spell:
         for foregroundImage in self.foregroundImages:
             self.addForegroundPaletteColours(os.path.join(framesPath, foregroundImage))
 
+        if self.skipBackground:
+            return
+
         for backgroundImage in self.backgroundImages:
             self.addBackgroundPaletteColours(os.path.join(framesPath, backgroundImage))
 
@@ -83,12 +86,6 @@ class Spell:
                 "enemy_effect",
                 [
                     "%sFGHit" % self.name
-                ],
-            ],
-            [
-                "enemy_under_effect",
-                [
-                    "%sBGHit" % self.name
                 ]
             ]
         ]
@@ -98,15 +95,25 @@ class Spell:
                 "enemy_effect",
                 [
                     "%sFGMiss" % self.name
-                ],
-            ],
-            [
+                ]
+            ]
+        ]
+
+        if not self.skipBackground:
+
+            commandsOnHit.append([
+                "enemy_under_effect",
+                [
+                    "%sBGHit" % self.name
+                ]
+            ])
+            
+            commandsOnMiss.append([
                 "enemy_under_effect",
                 [
                     "%sBGMiss" % self.name
                 ]
-            ]
-        ]
+            ])
 
         currentFrame = 0
 
@@ -175,6 +182,7 @@ class Spell:
             for (newImage, waitFrames) in updates
         ]
 
+        # assume blend, might be wrong for some spells
         commands.insert(0, ["blend", [True]])
         commands.append(wait(1))
 
