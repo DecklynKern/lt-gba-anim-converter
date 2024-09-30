@@ -13,6 +13,7 @@ class Parser:
     foregroundImages = {}
     backgroundImages = {}
 
+    currentBrightness = 1
     currentForeground = None
     currentBackground = None
 
@@ -120,13 +121,21 @@ class Parser:
 
                             # set brightness and opacity levels
                             case 0x29:
-                                
+        
                                 brightness = arg1 / 0x10
                                 opacity = 1.0 - (arg2 / 0x10 / 2)
 
+                                # assume if brightness changes, we are changing fully
+                                if brightness < self.currentBrightness:
+                                    self.currentBrightness = 0
+                                    self.addGlobalCommand("darken")
+
+                                elif brightness > self.currentBrightness:
+                                    self.currentBrightness = 1
+                                    self.addGlobalCommand("lighten")
+
                             # Sets whether maps 2 and 3 of the GBA screen should be visible.
                             case 0x2A:
-
                                 displayMaps = arg2 != 0
 
                             # 0x2B through 0x3F - passed to attacker's animation
