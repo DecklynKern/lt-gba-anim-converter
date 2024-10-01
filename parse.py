@@ -14,8 +14,8 @@ class Parser:
     foregroundImages = {}
     backgroundImages = {}
 
-    currentBrightness = 1
-    currentBrightnessChange = None
+    currentDimness = 0
+    currentDimnessChange = None
 
     currentForeground = None
     currentBackground = None
@@ -45,57 +45,47 @@ class Parser:
         if not self.foundMissTerminator:
             self.addGlobalCommandOnMiss(name, parameters)
 
-    def endLastForegroundUpdate(self):
+    def flushForeground(self):
 
-        if not self.foundMissTerminator:            
-            if len(self.foregroundUpdates) != 0:
-                self.foregroundUpdates[-1] = (self.foregroundUpdates[-1], self.currentFrame - self.lastForegroundChange)
+        if self.currentForeground == None or self.currentFrame == self.lastForegroundChange:
+            return
+        
+        if self.foundMissTerminator:
+            self.foregroundUpdatesAfterHit.append((self.currentForeground, self.currentFrame - self.lastForegroundChange))
 
         else:
-            if len(self.foregroundUpdatesAfterHit) != 0:
-                self.foregroundUpdatesAfterHit[-1] = (self.foregroundUpdatesAfterHit[-1], self.currentFrame - self.lastForegroundChange)
+            self.foregroundUpdates.append((self.currentForeground, self.currentFrame - self.lastForegroundChange))
 
         self.lastForegroundChange = self.currentFrame
 
-    def endLastBackgroundUpdate(self):
+    def flushBackground(self):
 
-        if not self.foundMissTerminator:            
-            if len(self.backgroundUpdates) != 0:
-                self.backgroundUpdates[-1] = (self.backgroundUpdates[-1], self.currentFrame - self.lastBackgroundChange)
+        if self.currentBackground == None or self.currentFrame == self.lastBackgroundChange:
+            return
+
+        if self.foundMissTerminator:
+            self.backgroundUpdatesAfterHit.append((self.currentBackground, self.currentFrame - self.lastBackgroundChange))
 
         else:
-            if len(self.backgroundUpdatesAfterHit) != 0:
-                self.backgroundUpdatesAfterHit[-1] = (self.backgroundUpdatesAfterHit[-1], self.currentFrame - self.lastBackgroundChange)
+            self.backgroundUpdates.append((self.currentBackground, self.currentFrame - self.lastBackgroundChange))
 
         self.lastBackgroundChange = self.currentFrame
 
     def updateForeground(self, newForeground):
 
+        self.flushForeground()
         self.currentForeground = newForeground
-        self.endLastForegroundUpdate()
 
         if newForeground not in self.foregroundImages:
             self.foregroundImages[newForeground] = "%sFG%d" % (self.spellName, len(self.foregroundImages))
 
-        if self.foundMissTerminator:
-            self.foregroundUpdatesAfterHit.append(newForeground)
-
-        else:
-            self.foregroundUpdates.append(newForeground)
-
     def updateBackground(self, newBackground):
 
+        self.flushBackground()
         self.currentBackground = newBackground
-        self.endLastBackgroundUpdate()
 
         if newBackground not in self.backgroundImages:
             self.backgroundImages[newBackground] = "%sBG%d" % (self.spellName, len(self.backgroundImages))
-
-        if self.foundMissTerminator:
-            self.backgroundUpdatesAfterHit.append(newBackground)
-
-        else:
-            self.backgroundUpdates.append(newBackground)
 
     def tryUpdateDisplay(self, newForeground, newBackground):
         
@@ -154,19 +144,19 @@ class Parser:
                             # set brightness and opacity levels
                             case 0x29:
         
-                                brightness = arg1 / 0x10
+                                dimness = arg1 / 0x10
                                 opacity = 1.0 - (arg2 / 0x10 / 2)
 
                                 # assume if brightness changes, we are changing fully
-                                if brightness < self.currentBrightness and self.currentBrightnessChange != -1:
-                                    self.currentBrightnessChange = -1
-                                    self.addGlobalCommand("darken")
-
-                                elif brightness > self.currentBrightness and self.currentBrightnessChange != 1:
-                                    self.currentBrightnessChange = 1
+                                if dimness < self.currentDimness and self.currentDimnessChange != -1:
+                                    self.currentDimnessChange = -1
                                     self.addGlobalCommand("lighten")
 
-                                self.currentBrightness = brightness
+                                elif dimness > self.currentDimness and self.currentDimnessChange != 1:
+                                    self.currentDimnessChange = 1
+                                    self.addGlobalCommand("darken")
+
+                                self.currentDimness = dimness
 
                             # Sets whether maps 2 and 3 of the GBA screen should be visible.
                             case 0x2A:
@@ -214,11 +204,8 @@ class Parser:
                         if self.hasPanned:
                             self.addGlobalCommandOnMiss("pan")
 
-                        self.foregroundUpdatesAfterHit.append(self.foregroundUpdates[-1])
-                        self.backgroundUpdatesAfterHit.append(self.backgroundUpdates[-1])
-
-                        self.endLastForegroundUpdate()
-                        self.endLastBackgroundUpdate()
+                        self.flushForeground()
+                        self.flushBackground()
 
                         self.foundMissTerminator = True
 
@@ -226,16 +213,10 @@ class Parser:
                     case _:
                         pass
 
-        self.endLastForegroundUpdate()
-        self.endLastBackgroundUpdate()
-
         if self.hasPanned:
             self.addGlobalCommandOnHit("pan")
 
-        if self.foregroundUpdatesAfterHit[0][1] == 0:
-            self.foregroundUpdatesAfterHit = self.foregroundUpdatesAfterHit[1:]
-
-        if self.backgroundUpdatesAfterHit[0][1] == 0:
-            self.backgroundUpdatesAfterHit = self.backgroundUpdatesAfterHit[1:]
+        self.flushForeground()
+        self.flushBackground()
 
         return Spell(self.spellName, self.globalCommandsOnHit, self.globalCommandsOnMiss, self.foregroundUpdates, self.foregroundUpdatesAfterHit, self.backgroundUpdates, self.backgroundUpdatesAfterHit, self.foregroundImages, self.backgroundImages, self.stretchForeground)
