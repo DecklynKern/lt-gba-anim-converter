@@ -70,7 +70,7 @@ SOUND_TABLE = {
     0x00AF: "Wall Attack",
     0x00B0: "attacking_wall_snag",
     0x00B1: "Unlock",
-    0x00B3: "Torch,
+    0x00B3: "Torch",
     0x00B4: "Warp",
     0x00B5: "WarpEnd",
     0x00B6: "PureWater",
