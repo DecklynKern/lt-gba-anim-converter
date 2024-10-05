@@ -884,55 +884,11 @@
         null
     ],
     [
-        "show_dialog_get_item",
-        null
-    ],
-    [
-        "levelup",
-        null
-    ],
-    [
-        "weapon_broke",
-        null
-    ],
-    [
-        "savemenu_wrote",
-        null
-    ],
-    [
         "menu_select",
         null
     ],
     [
         "map_cursor_moved",
-        null
-    ],
-    [
-        "menu_move_cursor",
-        null
-    ],
-    [
-        "menu_move_cursorhigher_pitched",
-        null
-    ],
-    [
-        "non-controllable_units_range_is_displayed",
-        null
-    ],
-    [
-        "controllable_units_range_is_displayed_when_pressing_a_button",
-        null
-    ],
-    [
-        "menu_option_selected_a_pressed",
-        null
-    ],
-    [
-        "going_back_in_the_menu_b_pressed",
-        null
-    ],
-    [
-        "invalid_option_selected",
         null
     ],
     [
@@ -948,23 +904,7 @@
         null
     ],
     [
-        "r_description_open",
-        null
-    ],
-    [
-        "r_description_close",
-        null
-    ],
-    [
         "savemenu_can_not_be_selected",
-        null
-    ],
-    [
-        "phase_message_sound",
-        null
-    ],
-    [
-        "hp_replenishment",
         null
     ],
     [
@@ -973,14 +913,6 @@
     ],
     [
         "menu_select_1",
-        null
-    ],
-    [
-        "mini_map_open",
-        null
-    ],
-    [
-        "mini_map_close",
         null
     ],
     [
@@ -1040,23 +972,7 @@
         null
     ],
     [
-        "live_staff",
-        null
-    ],
-    [
-        "relive_staff",
-        null
-    ],
-    [
-        "recover_staff",
-        null
-    ],
-    [
         "reserve_staff",
-        null
-    ],
-    [
-        "unlock_staff_map",
         null
     ],
     [
@@ -1064,43 +980,7 @@
         null
     ],
     [
-        "footsteps_1",
-        null
-    ],
-    [
-        "footsteps_2",
-        null
-    ],
-    [
-        "footsteps_3",
-        null
-    ],
-    [
-        "footsteps_4",
-        null
-    ],
-    [
         "footsteps_5",
-        null
-    ],
-    [
-        "horse_trot",
-        null
-    ],
-    [
-        "horse_trot_2",
-        null
-    ],
-    [
-        "horse_trot_3",
-        null
-    ],
-    [
-        "horse_trot_4",
-        null
-    ],
-    [
-        "horse_trot_5",
         null
     ],
     [
@@ -1112,43 +992,7 @@
         null
     ],
     [
-        "armour_walk_3",
-        null
-    ],
-    [
-        "armour_walk_4",
-        null
-    ],
-    [
-        "armour_walk_5",
-        null
-    ],
-    [
-        "armour_walk_6",
-        null
-    ],
-    [
-        "pegasus_flying",
-        null
-    ],
-    [
-        "pegasus_flying_2",
-        null
-    ],
-    [
-        "recovery_from_a_status_effect",
-        null
-    ],
-    [
-        "village_destroyed",
-        null
-    ],
-    [
         "captive_falling_from_dead_holder",
-        null
-    ],
-    [
-        "destroyed_wall_snag",
         null
     ],
     [
@@ -1156,35 +1000,7 @@
         null
     ],
     [
-        "unlocking_door",
-        null
-    ],
-    [
-        "torch_1",
-        null
-    ],
-    [
-        "warping",
-        null
-    ],
-    [
-        "warp_end",
-        null
-    ],
-    [
-        "pure_water",
-        null
-    ],
-    [
-        "poison_sound",
-        null
-    ],
-    [
         "ui_or_status-related_sound_effect",
-        null
-    ],
-    [
-        "gold_changing",
         null
     ],
     [
@@ -1208,18 +1024,6 @@
         null
     ],
     [
-        "small_plunk",
-        null
-    ],
-    [
-        "light_plunk",
-        null
-    ],
-    [
-        "large_plunk",
-        null
-    ],
-    [
         "eliwood_critical_sword_swing",
         null
     ],
@@ -1232,47 +1036,11 @@
         null
     ],
     [
-        "sword_unsheathing",
-        null
-    ],
-    [
-        "sword_unsheathing_2",
-        null
-    ],
-    [
         "ballista_fire",
         null
     ],
     [
         "creaking",
-        null
-    ],
-    [
-        "hit_map",
-        null
-    ],
-    [
-        "hit_2map",
-        null
-    ],
-    [
-        "hit_3map",
-        null
-    ],
-    [
-        "kill_map",
-        null
-    ],
-    [
-        "death_map",
-        null
-    ],
-    [
-        "miss_realtime",
-        null
-    ],
-    [
-        "critical_hit",
         null
     ],
     [
@@ -1296,34 +1064,6 @@
         null
     ],
     [
-        "brigand_battle_cry",
-        null
-    ],
-    [
-        "axe_falling",
-        null
-    ],
-    [
-        "axe_rising",
-        null
-    ],
-    [
-        "dance_play_effect",
-        null
-    ],
-    [
-        "divine_weapon_shine",
-        null
-    ],
-    [
-        "fire_charge",
-        null
-    ],
-    [
-        "fire_shoot",
-        null
-    ],
-    [
         "bolting_static",
         null
     ],
@@ -1332,107 +1072,11 @@
         null
     ],
     [
-        "shaman_charging",
-        null
-    ],
-    [
-        "fire_spell_hitting",
-        null
-    ],
-    [
-        "elfire_spell_hitting",
-        null
-    ],
-    [
-        "berserk_staff_realtime",
-        null
-    ],
-    [
-        "silence_staff_charging_realtime",
-        null
-    ],
-    [
-        "silence_staff_forming_realtime",
-        null
-    ],
-    [
-        "silence_staff_strike",
-        null
-    ],
-    [
-        "rest_staff_realtime",
-        null
-    ],
-    [
-        "purge_flash",
-        null
-    ],
-    [
-        "purge_flash_2",
-        null
-    ],
-    [
-        "purge_charging",
-        null
-    ],
-    [
-        "purge_strike",
-        null
-    ],
-    [
-        "barrier_staff_realtime",
-        null
-    ],
-    [
-        "hammerne_staff_realtime",
-        null
-    ],
-    [
-        "flux_charging",
-        null
-    ],
-    [
-        "live_staff_1",
-        null
-    ],
-    [
         "live_staff_on_map",
         null
     ],
     [
-        "relive_staff_1",
-        null
-    ],
-    [
-        "relive_staff_on_map",
-        null
-    ],
-    [
-        "recover_staff_1",
-        null
-    ],
-    [
-        "recover_staff_on_map",
-        null
-    ],
-    [
         "reserve_staff_realtime",
-        null
-    ],
-    [
-        "bolting_sparks",
-        null
-    ],
-    [
-        "bolting_strike_1",
-        null
-    ],
-    [
-        "sleep_charging_realtime",
-        null
-    ],
-    [
-        "sleep_activating_realtime",
         null
     ],
     [
@@ -1444,111 +1088,11 @@
         null
     ],
     [
-        "lightning_charging",
-        null
-    ],
-    [
-        "lightning_strike",
-        null
-    ],
-    [
-        "fimbulvetr_wind",
-        null
-    ],
-    [
-        "fimbulvetr_ice",
-        null
-    ],
-    [
-        "nosferatu_symbol",
-        null
-    ],
-    [
-        "nosferatu_drain",
-        null
-    ],
-    [
-        "nosferatu_heal",
-        null
-    ],
-    [
-        "divine_charging",
-        null
-    ],
-    [
-        "divine_falling",
-        null
-    ],
-    [
-        "divine_strike",
-        null
-    ],
-    [
-        "fenrir_symbols",
-        null
-    ],
-    [
-        "fenrir_rune",
-        null
-    ],
-    [
-        "fenrir_flame",
-        null
-    ],
-    [
-        "fenrir_hit",
-        null
-    ],
-    [
-        "valkyrie_charging",
-        null
-    ],
-    [
-        "sage_lyon_magical_rune",
-        null
-    ],
-    [
         "ballista_arrow",
         null
     ],
     [
         "ballista_arrow_falling",
-        null
-    ],
-    [
-        "hazymoon_1",
-        null
-    ],
-    [
-        "hazymoon_2",
-        null
-    ],
-    [
-        "promotion_aura_rises",
-        null
-    ],
-    [
-        "promotion_aura_falls",
-        null
-    ],
-    [
-        "promotion_glow_after_emerging_from_aura",
-        null
-    ],
-    [
-        "promotion_lightning_bolt",
-        null
-    ],
-    [
-        "demon_king_s_appearance_1",
-        null
-    ],
-    [
-        "demon_king_s_appearance_2",
-        null
-    ],
-    [
-        "demon_king_s_appearance_3",
         null
     ],
     [
@@ -1565,22 +1109,6 @@
     ],
     [
         "soft_step",
-        null
-    ],
-    [
-        "soft_step_2",
-        null
-    ],
-    [
-        "soft_step_3",
-        null
-    ],
-    [
-        "soft_step_4",
-        null
-    ],
-    [
-        "soft_step_1",
         null
     ],
     [
@@ -1608,35 +1136,7 @@
         null
     ],
     [
-        "play_sword_whooshing_sfe_done_by_nomads_sounds_like_wing_flap",
-        null
-    ],
-    [
-        "play_wing_flap_sfe",
-        null
-    ],
-    [
-        "play_longer_wing_flapping_sfe",
-        null
-    ],
-    [
-        "play_longer_wing_flapping_sfe_1",
-        null
-    ],
-    [
-        "play_armored_unit_leaping_sfe",
-        null
-    ],
-    [
-        "play_armored_unit_leaping_sfe_1",
-        null
-    ],
-    [
         "moving_sound_of_pegasus_during_triangle_attack",
-        null
-    ],
-    [
-        "circle_of_light_by_torch",
         null
     ],
     [
@@ -1648,55 +1148,7 @@
         null
     ],
     [
-        "shine_attack",
-        null
-    ],
-    [
-        "luna_symbol",
-        null
-    ],
-    [
-        "luna_hitting",
-        null
-    ],
-    [
-        "excalibur_forming",
-        null
-    ],
-    [
-        "excalibur_cutting",
-        null
-    ],
-    [
-        "aura_flash",
-        null
-    ],
-    [
-        "aura_going_up",
-        null
-    ],
-    [
-        "aura_strike",
-        null
-    ],
-    [
-        "gespenst_symbol",
-        null
-    ],
-    [
-        "gespenst_clouds",
-        null
-    ],
-    [
-        "gespenst_strike",
-        null
-    ],
-    [
         "weird_charging",
-        null
-    ],
-    [
-        "level_up_sparkle",
         null
     ],
     [
@@ -1713,10 +1165,6 @@
     ],
     [
         "weird_flaming_sound",
-        null
-    ],
-    [
-        "dancing",
         null
     ],
     [
@@ -1753,10 +1201,6 @@
     ],
     [
         "eclipse_striking",
-        null
-    ],
-    [
-        "eclipse_striking_shorter",
         null
     ],
     [
@@ -1820,14 +1264,6 @@
         null
     ],
     [
-        "druid_critical_charge",
-        null
-    ],
-    [
-        "sage_critical_conjuration",
-        null
-    ],
-    [
         "swish_sound",
         null
     ],
@@ -1837,54 +1273,6 @@
     ],
     [
         "dragons_attacking_athos",
-        null
-    ],
-    [
-        "revenant_map_step",
-        null
-    ],
-    [
-        "entombed_map_step",
-        null
-    ],
-    [
-        "bonewalker_map_step",
-        null
-    ],
-    [
-        "wight_map_step",
-        null
-    ],
-    [
-        "mogall_map_step",
-        null
-    ],
-    [
-        "arch_mogall_map_step",
-        null
-    ],
-    [
-        "bael_map_step",
-        null
-    ],
-    [
-        "elder_bael_map_step",
-        null
-    ],
-    [
-        "tarvos_map_step",
-        null
-    ],
-    [
-        "maelduin_map_step",
-        null
-    ],
-    [
-        "gorgons_map_step_1",
-        null
-    ],
-    [
-        "gorgons_map_step_2",
         null
     ],
     [
@@ -1916,71 +1304,7 @@
         null
     ],
     [
-        "chapter_opening",
-        null
-    ],
-    [
         "game_opening_title_se",
-        null
-    ],
-    [
-        "revenant_combat_sounds_1",
-        null
-    ],
-    [
-        "revenant_combat_sounds_2",
-        null
-    ],
-    [
-        "revenant_combat_sounds_3",
-        null
-    ],
-    [
-        "bael_combat_sounds_1",
-        null
-    ],
-    [
-        "bael_combat_sounds_2",
-        null
-    ],
-    [
-        "bael_combat_sounds_3",
-        null
-    ],
-    [
-        "cyclops_battle_cry",
-        null
-    ],
-    [
-        "mauthedoog_roar",
-        null
-    ],
-    [
-        "mauthedoog_bite",
-        null
-    ],
-    [
-        "mauthedoog_howl",
-        null
-    ],
-    [
-        "gargoyle_battle_cry",
-        null
-    ],
-    [
-        "gorgon_casting_spell_1",
-        null
-    ],
-    [
-        "gorgon_casting_spell_2",
-        null
-    ],
-    [
-        "gorgon_scream",
-        null
-    ],
-    [
-        "gargoyle_laugh",
         null
     ],
     [
@@ -1993,10 +1317,6 @@
     ],
     [
         "mage_knight_magic_sound",
-        null
-    ],
-    [
-        "bonewalker_critical_sfe",
         null
     ],
     [
@@ -2020,47 +1340,7 @@
         null
     ],
     [
-        "gleipnir_rune_and_fire",
-        null
-    ],
-    [
-        "gleipnir_hitting",
-        null
-    ],
-    [
-        "naglfar_rune_and_vortex",
-        null
-    ],
-    [
-        "naglfar_hitting",
-        null
-    ],
-    [
-        "formotiis_magic",
-        null
-    ],
-    [
-        "formotiis_magic_1",
-        null
-    ],
-    [
         "excalibur_wind_clouds",
-        null
-    ],
-    [
-        "demon_surge",
-        null
-    ],
-    [
-        "gorgon_attacking",
-        null
-    ],
-    [
-        "stone_1_sfx",
-        null
-    ],
-    [
-        "stone_2_sfx",
         null
     ],
     [
@@ -2084,34 +1364,6 @@
         null
     ],
     [
-        "summon_sfx",
-        null
-    ],
-    [
-        "mogall_combat_sounds_1",
-        null
-    ],
-    [
-        "mogall_combat_sounds_2",
-        null
-    ],
-    [
-        "mogall_combat_sounds_3",
-        null
-    ],
-    [
-        "mogall_combat_sounds_4",
-        null
-    ],
-    [
-        "evil_eye",
-        null
-    ],
-    [
-        "crimson_eye",
-        null
-    ],
-    [
         "egg_grow",
         null
     ],
@@ -2128,27 +1380,7 @@
         null
     ],
     [
-        "activate_skill_animation",
-        null
-    ],
-    [
         "unknown_1_2_3_4_5_6_7",
-        null
-    ],
-    [
-        "ivaldi_1",
-        null
-    ],
-    [
-        "ivaldi_2",
-        null
-    ],
-    [
-        "shadowshot_fire",
-        null
-    ],
-    [
-        "shadowshot_hitting",
         null
     ],
     [
